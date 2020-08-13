@@ -5,9 +5,12 @@ import re
 
 class ArticleSelector:
     
-    url = f'https://en.wikipedia.org/wiki/'
-    infomation = {}
-
+    url = 'https://en.wikipedia.org/wiki/'
+    infomation = {'0': 'Intro'}
+    
+   
+    
+   
     def __init__(self, search_term):
         self.search_term = search_term
         
@@ -26,45 +29,38 @@ class ArticleSelector:
         self.r = re.compile(r"([0-9]+)")
         
         self.page_links = list(filter(self.r.match, self.navigation))
-
+        
         # Puts the contents into the a dict - need to pack values into dict next
         for i in self.page_links:
-            self.infomation.setdefault(i)
+            self.index = i.split(' ', 1)
+            self.infomation.setdefault(self.index[0], self.index[1])
         
-        
+        print(self.infomation)
         # Separate sections of the page 
-
-        self.article = self.soup.find('div', {'class': 'mw-parser-output'})
-        for i in self.article:
-            self.sub_cats = self.soup.find('span', {'id': 'Common_elements'})
-            if i.name == 'p':
-                print(i.text)
-            if i.name == 'h2':
-                break
-            
-        # for child in self.section.next_sibling:
-        #     print(child)
-
-
-        # for elem in self.section.find_all_next('p'):
-        #     print(elem)
+        for i, j in self.infomation.items():
+            print(i, j)
+        
+        # TEST: CHANGE TO INPUT ONCE COMPLETED
+        
+        self.user_input = input('Enter a number: ')
+        self.f = self.infomation.get(self.user_input).split(" ")
+        
+        self.id_search = "_".join(self.f)
+        
+        
+        self.sub_cats = self.soup.find('div', {'class': 'mw-parser-output'}).find('span', {'id': f'{self.id_search}'})
        
         
+        for i in self.sub_cats.find_all_next(['p', 'h2', 'h3', 'h4']):
+            if i.name == 'p' or i.name == 'h3' or i.name == 'h4' or i.name == 'li':
+                 print(i.text)
+            else:
+                 break
+        
+    
 
 
 
-        #self.titles = self.soup.find('p')
-        # for elem in self.titles.next_siblings:
-        #     if elem.name != 'h2':
-        #         continue
-        #     print(elem)
-
-
-        # TODO: PUT CONTENT INTO A DICT
-        # T0DO: CREATE GUI
-       
-
-
-user_article = ArticleSelector('football')
+user_article = ArticleSelector('apple')
 user_article.test_connection()
 user_article.web_scraper()
