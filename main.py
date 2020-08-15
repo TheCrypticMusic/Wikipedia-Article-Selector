@@ -71,10 +71,15 @@ class ArticleSelector:
         self.sub_category = self.soup.find('div', {'class': 'mw-parser-output'}).find('span', {'id': f'{self.id_search}'})
         for i in self.sub_category.find_all_next(['p', 'h2', 'h3', 'h4', 'li']):
             if i.name == 'p' or i.name == 'h3' or i.name == 'h4' or i.name == 'li':
-                 print(f'\n{i.text}')
+                print(f'\n{i.text}')
             else:
-                 break
-        
+                print('Would you like to view another section?')
+                self.choice = input('Yes or no? (Enter: Yes/ No): ')
+                if self.choice.lower() == 'yes':
+                    self.__web_scraper()
+                else:
+                    print('Okay. Shutting down...')
+                    break
           
-user_article = ArticleSelector('Apple Oranges')
+user_article = ArticleSelector('Atom of the')
 user_article.test_connection()
