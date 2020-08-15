@@ -1,4 +1,3 @@
-from re import search
 import requests
 from bs4 import BeautifulSoup
 import re 
@@ -16,31 +15,39 @@ class ArticleSelector:
     def __init__(self, search_term):
         self.search_term = search_term
         
-        
     def test_connection(self):
         self.res = requests.get(f'{self.url}{self.search_term}')
         if self.res.status_code == 200:
             print('Article found')
+            self.__web_scraper()
         else:
             print('Article not found. Did you mean:')
-            self.res = requests.get(f'{self.search_not_found}{self.search_term}')
-            self.search_soup = BeautifulSoup(self.res.text, 'lxml')
-            self.search_results = self.search_soup.find('ul', {'class': 'mw-search-results'}).find_all_next('div', {'class': 'mw-search-result-heading'})
-            # Enumerate to add numbers to list
+            self.__article_not_found()
+            self.__choose_new_article()
             
-            for number, search in enumerate(self.search_results):
-                search = search.get_text()
-                self.search_names.setdefault(number, search)
             
-            for key, values in self.search_names.items():
-                print(key, values)
-
-            self.choose_article = int(input())
-            # Need to remove search headings with brackets
-            self.new_search = self.search_names.get(self.choose_article)
-            self.res = requests.get(f'{self.url}{self.new_search}')
+    def __article_not_found(self):
+        
+        self.res = requests.get(f'{self.search_not_found}{self.search_term}')
+        self.search_soup = BeautifulSoup(self.res.text, 'lxml')
+        self.search_results = self.search_soup.find('ul', {'class': 'mw-search-results'}).find_all_next('div', {'class': 'mw-search-result-heading'})
+        # Enumerate to add numbers to list
+        
+        for number, search in enumerate(self.search_results):
+            search = search.get_text()
+            self.search_names.setdefault(number, search)
+        
+        for key, values in self.search_names.items():
+            print(key, values)
+    
+    def __choose_new_article(self):
+        self.choose_article = int(input())
+        # Need to remove search headings with brackets
+        self.new_search = self.search_names.get(self.choose_article)
+        self.res = requests.get(f'{self.url}{self.new_search}')
+        self.__web_scraper()
             
-    def web_scraper(self):
+    def __web_scraper(self):
         self.soup = BeautifulSoup(self.res.text, 'lxml')
         self.navigation = self.soup.find('div', {'role': 'navigation'}).get_text().split('\n')
         # Regular expression used to find every section of the page in the navigation box.
@@ -68,11 +75,6 @@ class ArticleSelector:
             else:
                  break
         
-      
-    
-
-
-
+          
 user_article = ArticleSelector('Apple Oranges')
 user_article.test_connection()
-user_article.web_scraper()
