@@ -82,6 +82,5 @@ class ArticleSelector:
                     break
 
 
-
 user_article = ArticleSelector('Atom of the')
 user_article.test_connection()
