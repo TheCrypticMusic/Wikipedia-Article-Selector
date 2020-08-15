@@ -81,7 +81,7 @@ class ArticleSelector:
                     print('Okay. Shutting down...')
                     break
 
-    
-          
+
+
 user_article = ArticleSelector('Atom of the')
 user_article.test_connection()
