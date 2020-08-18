@@ -30,8 +30,7 @@ class App(tk.Frame):
         self.display_content_results = tk.Text(self, width=50, height=30)
         self.display_content_results.pack(side=tk.LEFT, padx=10, pady=10)
         
-        self.new_search = tk.Button(self, text='New Search')
-        self.new_search.pack(side=tk.BOTTOM, pady=100)
+        
         
 
     def user_search(self, event=None):
