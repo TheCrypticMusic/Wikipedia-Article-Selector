@@ -22,21 +22,16 @@ class App(tk.Frame):
 
         self.search_bar = tk.Entry(self)
         self.search_bar.bind('<Return>', self.user_search)
-        self.search_bar.pack()
-        
-        
-        # ADD FUNCTION
         self.search_bar.pack(ipadx=70, pady=10)
 
-
+        # Text Box Widgets
         self.display_navigation_results = tk.Text(self, width=20, height=30)
-        
         self.display_navigation_results.pack(side=tk.LEFT, padx=10, pady=10)    
-        
         self.display_content_results = tk.Text(self, width=50, height=30)
-        
         self.display_content_results.pack(side=tk.LEFT, padx=10, pady=10)
         
+        self.new_search = tk.Button(self, text='New Search')
+        self.new_search.pack(side=tk.BOTTOM, pady=100)
         
 
     def user_search(self, event=None):
@@ -50,15 +45,17 @@ class App(tk.Frame):
     
     def navigation_content(self, event=None):
         for number, section in reversed(self.test.infomation.items()):
-            self.display_navigation_results.insert('1.0', f'\n{number} {section}')
+            self.display_navigation_results.insert('1.0', f'{number}: {section}\n')
         self.search_bar.bind('<Return>', self.results_contents)
+        
     
     def results_contents(self, event=None):
+        
         self.page_section = self.test.infomation.get(f'{self.search_bar.get()}').split(" ")
         self.id_search = "_".join(self.page_section)
         self.test.display_content(self.id_search)
-    
-        self.display_content_results.insert('1.0', f'{self.test.section_text}')
+        self.search_bar.delete(0, 'end')
+        self.display_content_results.insert('1.0', f'{" ".join(self.test.section_text)}')
         
         
         #for number, section in self.test.infomation.items():
