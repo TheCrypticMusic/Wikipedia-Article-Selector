@@ -91,3 +91,11 @@ class ArticleSelector:
 
 
 
+
+#  self.page_number = self.search_number.get()
+#         if self.page_number:
+#             self.results_contents()
+    
+# self.search_number = tk.Entry(self)
+#         self.search_number.bind('<Return>', self.navigation_content)
+#         self.search_number.pack()
