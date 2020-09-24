@@ -21,20 +21,13 @@ class App(tk.Frame):
         self.search_bar.bind('<Return>', self.content)
         self.search_bar.pack()
         
-        # ADD FUNCTION
         self.search_bar.pack(ipadx=70, pady=10)
-
-
         self.display_navigation_results = tk.Text(self, width=20, height=30)
-        
         self.display_navigation_results.pack(side=tk.LEFT, padx=10, pady=10)    
-        
         self.display_content_results = tk.Text(self, width=50, height=30)
-        
         self.display_content_results.pack(side=tk.LEFT, padx=10, pady=10)
         
-        
-
+    
     def user_search(self, event=None):
         self.search = self.search_bar.get()
         self.search_bar.delete(0, 'end')
