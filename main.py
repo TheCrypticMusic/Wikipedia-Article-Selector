@@ -12,7 +12,8 @@ class ArticleSelector:
 
     def __init__(self, search_term):
         self.search_term = search_term
-        
+        self.test_connection()
+
     def test_connection(self):
         self.res = requests.get(f'{self.url}{self.search_term}')
         if self.res.status_code == 200:
@@ -55,27 +56,27 @@ class ArticleSelector:
         for i in self.page_links:
             self.index = i.split(' ', 1)
             self.infomation.setdefault(self.index[0], self.index[1])
-        
-        # Displays to the user all the sections on that particular Wikipedia page
-        for number, section_name in self.infomation.items():
-            print(number, section_name)
-        
-        self.user_input = input('Enter a number: ')
-        self.page_section = self.infomation.get(self.user_input).split(" ")
-        # Wikipedia uses the section name as ID tag with underscores for spaces EG: Toxicity of seeds = Toxicity_of_seeds
-        self.id_search = "_".join(self.page_section)
-        self.sub_category = self.soup.find('div', {'class': 'mw-parser-output'}).find('span', {'id': f'{self.id_search}'})
-        for i in self.sub_category.find_all_next(['p', 'h2', 'h3', 'h4', 'li']):
-            if i.name == 'p' or i.name == 'h3' or i.name == 'h4' or i.name == 'li':
-                print(f'\n{i.text}')
-            else:
-                print('Would you like to view another section?')
-                self.choice = input('Yes or no? (Enter: Yes/ No): ')
-                if self.choice.lower() == 'yes':
-                    self.__web_scraper()
-                else:
-                    print('Okay. Shutting down...')
-                    break
 
-user_article = ArticleSelector('Apple')
-user_article.test_connection()
+    
+    
+        #Displays to the user all the sections on that particular Wikipedia page
+        # for number, section_name in self.infomation.items():
+        #     print(number, section_name)
+        
+        # self.user_input = input('Enter a number: ')
+        # self.page_section = self.infomation.get(self.user_input).split(" ")
+        # # Wikipedia uses the section name as ID tag with underscores for spaces EG: Toxicity of seeds = Toxicity_of_seeds
+        # self.id_search = "_".join(self.page_section)
+        # self.sub_category = self.soup.find('div', {'class': 'mw-parser-output'}).find('span', {'id': f'{self.id_search}'})
+        # for i in self.sub_category.find_all_next(['p', 'h2', 'h3', 'h4', 'li']):
+        #     if i.name == 'p' or i.name == 'h3' or i.name == 'h4' or i.name == 'li':
+        #         print(f'\n{i.text}')
+        #     else:
+        #         print('Would you like to view another section?')
+        #         self.choice = input('Yes or no? (Enter: Yes/ No): ')
+        #         if self.choice.lower() == 'yes':
+        #             self.__web_scraper()
+        #         else:
+        #             print('Okay. Shutting down...')
+        #             break
+
