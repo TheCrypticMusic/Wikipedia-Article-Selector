@@ -5,12 +5,10 @@ import re
 
 class ArticleSelector:
     
-
     url = 'https://en.wikipedia.org/wiki/'
     infomation = {'0': 'Intro'}
     search_not_found = 'https://en.wikipedia.org/w/index.php?sort=relevance&search='
     search_names = {}
-
 
     def __init__(self, search_term):
         self.search_term = search_term
@@ -25,14 +23,13 @@ class ArticleSelector:
             self.__article_not_found()
             self.__choose_new_article()
             
-            
+    
     def __article_not_found(self):
         
         self.res = requests.get(f'{self.search_not_found}{self.search_term}')
         self.search_soup = BeautifulSoup(self.res.text, 'lxml')
         self.search_results = self.search_soup.find('ul', {'class': 'mw-search-results'}).find_all_next('div', {'class': 'mw-search-result-heading'})
         # Enumerate to add numbers to list
-        
         for number, search in enumerate(self.search_results):
             search = search.get_text()
             self.search_names.setdefault(number, search)
@@ -42,7 +39,6 @@ class ArticleSelector:
     
     def __choose_new_article(self):
         self.choose_article = int(input())
-        # Need to remove search headings with brackets
         self.new_search = self.search_names.get(self.choose_article)
         self.res = requests.get(f'{self.url}{self.new_search}')
         self.__web_scraper()
@@ -81,6 +77,5 @@ class ArticleSelector:
                     print('Okay. Shutting down...')
                     break
 
-
-user_article = ArticleSelector('Atom of the')
+user_article = ArticleSelector('Apple')
 user_article.test_connection()
